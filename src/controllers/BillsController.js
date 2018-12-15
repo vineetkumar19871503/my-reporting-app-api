@@ -6,7 +6,6 @@ module.exports = {
     post: {
         add: function(req, res, next){
             authHandler(req, res, next, function () {
-                console.log(res.body);
                 billModel.saveBill(req.body)
                 .then(function (response) {
                     res.rest.success({ 'message': 'Bill added successfully!' });

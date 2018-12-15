@@ -7,18 +7,17 @@ const schemas = {
     users: new Schema({
         name: String,
         email: String,
-        type: {type: String, default: 'employee'},
+        type: { type: String, default: 'employee' },
         dob: { type: Date, default: Date.now },
-        password: String
+        password: String,
+        status: { type: Boolean, default: true }
     })
 };
 
 
 //creating models for collections
 const models = {
-    //roleModel: mongoose.model('roles', schemas.roles),
-    userModel: mongoose.model('users', schemas.users),
-    //permissionModuleModel: mongoose.model('permission_modules', schemas.permission_modules),
+    userModel: mongoose.model('users', schemas.users)
 }
 
 module.exports = {
