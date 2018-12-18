@@ -4,17 +4,32 @@ const bcrypt = require('bcrypt'),
     billModel = billSchema.models.billModel;
 
 module.exports = {
-    getBills: function (conditions = {}, fields = {}) {
+    getBills: function (conditions = {}, fields = {}, order = {}) {
         const self = this;
         return new Promise(function (resolve, reject) {
-            // if (Object.keys(fields).length) {
-            //     query.push({ $project: fields });
-            // }
-            billModel.find(conditions)
-                .exec(function (err, bills) {
-                    err ? reject(err) : resolve(bills);
-                });
+            var query = [
+                {
+                    $lookup: {
+                        from: 'consumers',
+                        localField: 'consumer_id',
+                        foreignField: '_id',
+                        as: 'consumer'
+                    }
+                },
+                { $unwind: '$consumer' },
+                { $match: conditions }
+            ];
 
+            if (Object.keys(fields).length) {
+                query.push({ $project: fields });
+            }
+            if (Object.keys(order).length) {
+                query.push({ $sort: order });
+            }
+            billModel.aggregate(query)
+                .exec(function (err, data) {
+                    err ? reject(err) : resolve(data);
+                });
         });
 
     },

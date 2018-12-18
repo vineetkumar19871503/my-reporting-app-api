@@ -5,13 +5,13 @@ const config = require('../../../config'),
 //defining schemas
 const schemas = {
     bills: new Schema({
-        k_number: String,
-        receipt_number: { type: String, default: (""+Math.random()).substring(2,13) },
-        consumer_name: {type: String, default: 'employee'},
+        consumer_id: { type: Schema.Types.ObjectId, required: true },
+        receipt_number: { type: String, default: ("" + Math.random()).substring(2, 13) },
+        trans_id: { type: String, default: ("" + Math.random()).substring(2, 14) },
         amount: Number,
-        payment_mode: String,
-        bill_submission_date: {type: Date, default: Date.now},
-        added_by: { type: Schema.Types.ObjectId, required: true }  
+        payment_mode: { type: String, default: 'cash' },
+        bill_submission_date: { type: Date, default: Date.now },
+        added_by: { type: Schema.Types.ObjectId, required: true }
     })
 };
 
