@@ -66,6 +66,9 @@ module.exports = {
         }
     },
     get: {
+        checkSession: function (req, res, next) {
+            res.rest.success();
+        },
         list: function (req, res, next) {
             authHandler(req, res, next, function () {
                 let defaultConditions = {};
@@ -76,6 +79,25 @@ module.exports = {
                         };
                         if (users.length) {
                             response.message = 'Users';
+                        }
+                        response.data = users;
+                        res.rest.success(response);
+                    })
+                    .catch(function (err) {
+                        res.rest.serverError(err.message);
+                    });
+            });
+        },
+        getUserById: function (req, res, next) {
+            authHandler(req, res, next, function () {
+                let defaultConditions = {'_id': req.query.id};
+                userModel.getUsers(defaultConditions)
+                    .then(function (users) {
+                        var response = {
+                            message: 'User not found!'
+                        };
+                        if (users.length) {
+                            response.message = 'User Detail';
                         }
                         response.data = users;
                         res.rest.success(response);
