@@ -13,6 +13,8 @@ module.exports = {
                             req.body.consumer_id = consumer[0]._id;
                             billModel.saveBill(req.body)
                                 .then(function (response) {
+                                    response = JSON.parse(JSON.stringify(response));
+                                    response.consumer = consumer[0];
                                     res.rest.success({ 'message': 'Bill added successfully!', 'data': response });
                                 })
                                 .catch(function (err) {
@@ -20,14 +22,16 @@ module.exports = {
                                 });
                         } else {
                             consumerModel.saveConsumer(req.body)
-                                .then(function (response) {
-                                    req.body.consumer_id = response._id;
+                                .then(function (consumer) {
+                                    req.body.consumer_id = consumer._id;
                                     billModel.saveBill(req.body)
                                         .then(function (response) {
+                                            response = JSON.parse(JSON.stringify(response));
+                                            response.consumer = consumer;
                                             res.rest.success({ 'message': 'Bill added successfully!', 'data': response });
                                         })
                                         .catch(function (err) {
-                                            consumerModel.delete({ '_id': response._id });
+                                            consumerModel.delete({ '_id': consumer._id });
                                             res.rest.serverError({ 'message': 'Error : Bill could not be added. ' + err.message });
                                         });
                                 })
@@ -49,7 +53,7 @@ module.exports = {
                 const q = req.query;
                 if (q && Object.keys(q).length) {
                     if (q.k_number) {
-                        defaultConditions["consumer.k_number"] = {'$regex': new RegExp(q.k_number, 'i')};
+                        defaultConditions["consumer.k_number"] = { '$regex': new RegExp(q.k_number, 'i') };
                     }
                     if (q.startDate) {
                         let startDate = new Date(q.startDate);
