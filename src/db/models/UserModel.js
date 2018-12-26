@@ -26,5 +26,16 @@ module.exports = {
                 err ? reject(err) : resolve(user);
             });
         });
+    },
+    updateUser: function (data) {
+        return new Promise(function (resolve, reject) {
+            userModel.update({ '_id': data.uid }, data)
+                .then(function (res) {
+                    resolve(res)
+                })
+                .catch(function (e) {
+                    reject(e);
+                });
+        });
     }
 }

@@ -63,6 +63,27 @@ module.exports = {
                         res.rest.serverError(err.message);
                     });
             });
+        },
+        edit: function (req, res, next) {
+            authHandler(req, res, next, function () {
+                userModel.getUsers({ 'email': req.body.email, '_id': { $ne: req.body.uid } })
+                    .then(function (users) {
+                        if (users.length) {
+                            res.rest.success({ 'is_err': true, 'message': 'User already exists!' });
+                        } else {
+                            userModel.updateUser(req.body)
+                                .then(function (response) {
+                                    res.rest.success({ 'message': 'User updated successfully!' });
+                                })
+                                .catch(function (err) {
+                                    res.rest.serverError({ 'message': 'Error : User could not be updated. ' + err.message });
+                                });
+                        }
+                    })
+                    .catch(function (err) {
+                        res.rest.serverError(err.message);
+                    });
+            });
         }
     },
     get: {
@@ -90,7 +111,7 @@ module.exports = {
         },
         getUserById: function (req, res, next) {
             authHandler(req, res, next, function () {
-                let defaultConditions = {'_id': req.query.id};
+                let defaultConditions = { '_id': req.query.id };
                 userModel.getUsers(defaultConditions)
                     .then(function (users) {
                         var response = {
