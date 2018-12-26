@@ -6,8 +6,10 @@ const config = require('../../../config'),
 const schemas = {
     bills: new Schema({
         consumer_id: { type: Schema.Types.ObjectId, required: true },
-        receipt_number: { type: String, default: ("" + Math.random()).substring(2, 13) },
-        trans_id: { type: String, default: ("" + Math.random()).substring(2, 14) },
+        // receipt_number: { type: String, default: ("" + Math.random()).substring(2, 13) },
+        // trans_id: { type: String, default: ("" + Math.random()).substring(2, 14) },
+        receipt_number: { type: String },
+        trans_id: { type: String },
         amount: Number,
         payment_mode: { type: String, default: 'cash' },
         bill_submission_date: { type: Date, default: Date.now },

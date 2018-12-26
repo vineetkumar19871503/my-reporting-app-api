@@ -34,6 +34,8 @@ module.exports = {
 
     },
     saveBill: function (data) {
+        data.receipt_number = ("" + Math.random()).substring(2, 13);
+        data.trans_id = ("" + Math.random()).substring(2, 14);
         var newBill = new billModel(data);
         return new Promise(function (resolve, reject) {
             newBill.save(function (err, bill) {
