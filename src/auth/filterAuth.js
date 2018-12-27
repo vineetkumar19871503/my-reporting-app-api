@@ -8,7 +8,7 @@ module.exports = {
     permissions: {
         '/users/login': 1,
         '/users/logout': 1,
-        '/users/checkSession': 1
+        '/users/checkSession': 1        
     }
 }
 

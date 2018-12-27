@@ -1,5 +1,5 @@
 var config = {
-  jwtTokenExpires: 2,
+  jwtTokenExpires: 100,
   expressSessionSecure: true,
   expressSessionHttpOnly: false,
   db: {

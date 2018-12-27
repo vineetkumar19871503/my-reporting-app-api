@@ -88,7 +88,9 @@ module.exports = {
     },
     get: {
         checkSession: function (req, res, next) {
-            res.rest.success();
+            authHandler(req, res, next, function () {
+                res.rest.success();
+            });
         },
         list: function (req, res, next) {
             authHandler(req, res, next, function () {
