@@ -9,7 +9,7 @@ var config = {
   bcryptSalt: 10,
   jwtSecret: '09sdufa0sfusafkljsa098',
   host: 'localhost',
-  port: process.env.PORT || 3005,
+  port: process.env.PORT || 3000,
   enableAuth: true,
   enableCheckPermissions: false
 }
