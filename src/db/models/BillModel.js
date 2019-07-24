@@ -17,8 +17,7 @@ module.exports = {
                     }
                 },
                 { $unwind: '$consumer' },
-                { $match: conditions },
-                { $sort: { '_id': -1 } }
+                { $match: conditions }
             ];
 
             if (Object.keys(fields).length) {
@@ -35,8 +34,8 @@ module.exports = {
 
     },
     saveBill: function (data) {
-        data.receipt_number = "191" + ("" + Math.random()).substring(2, 10);
-        data.trans_id = "1901" + ("" + Math.random()).substring(2, 10);
+        data.receipt_number = "191"+("" + Math.random()).substring(2, 10);
+        data.trans_id = "1901"+("" + Math.random()).substring(2, 10);
         var newBill = new billModel(data);
         return new Promise(function (resolve, reject) {
             newBill.save(function (err, bill) {
