@@ -13,10 +13,21 @@ const schemas = {
         amount: Number,
         payment_mode: { type: String, default: 'cash' },
         bill_submission_date: { type: Date, default: Date.now },
-        added_by: { type: Schema.Types.ObjectId, required: true }
+        added_by: { type: Schema.Types.ObjectId, required: true },
+        created_at: { type: Date },
+        updated_at: { type: Date }
     })
 };
 
+// adding pre-save/pre-update hooks for updating the created_at and updated_at dates
+schemas.bills.pre('save', function (next) {
+    const now = Date.now();
+    this.created_at = Date.now();
+    next();
+});
+schemas.bills.pre('update', function () {
+    this.update({}, { $set: { updated_at: new Date() } });
+});
 
 //creating models for collections
 const models = {

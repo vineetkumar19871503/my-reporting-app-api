@@ -4,27 +4,35 @@ const config = require('../../../config'),
 
 //defining schemas
 const schemas = {
-    consumers: new Schema({
-        k_number: String,
-        consumer_name: String,
+    discom: new Schema({
+        date: { type: Date },
+        amount: { type: Number },
+        bulb_type: { type: String },
+        sell_status: { type: String },
+        quantity: { type: Number },
+        card_type: { type: String },
         created_at: {type: Date },
         updated_at: {type: Date }
+    },
+    {
+        collection: 'discom'
     })
 };
 
 // adding pre-save/pre-update hooks for updating the created_at and updated_at dates
-schemas.consumers.pre('save', function (next) {
+schemas.discom.pre('save', function (next) {
     const now = Date.now();
-    this.created_at = Date.now();
+    this.date = now;
+    this.created_at = now;
     next();
 });
-schemas.consumers.pre('update', function () {
+schemas.discom.pre('update', function () {
     this.update({}, { $set: { updated_at: new Date() } });
 });
 
 //creating models for collections
 const models = {
-    consumerModel: mongoose.model('consumers', schemas.consumers),
+    discomModel: mongoose.model('discom', schemas.discom),
 }
 
 module.exports = {

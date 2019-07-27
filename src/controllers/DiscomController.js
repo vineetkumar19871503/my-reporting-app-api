@@ -1,12 +1,12 @@
 const authHandler = require('../handlers/AuthHandler'),
-    bsnlCableModel = require('../db/models/BsnlCableModel');
+    discomModel = require('../db/models/DiscomModel');
 
 module.exports = {
-    name: 'bsnlcable',
+    name: 'discom',
     post: {
         add: function (req, res, next) {
             authHandler(req, res, next, function () {
-                bsnlCableModel.add(req.body)
+                discomModel.add(req.body)
                     .then(function (response) {
                         response = JSON.parse(JSON.stringify(response));
                         res.rest.success(response);
@@ -18,7 +18,7 @@ module.exports = {
         },
         update: function (req, res, next) {
             authHandler(req, res, next, function () {
-                bsnlCableModel.update(req.body)
+                discomModel.update(req.body)
                     .then(function (response) {
                         res.rest.success(response);
                     })

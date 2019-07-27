@@ -4,31 +4,32 @@ const config = require('../../../config'),
 
 //defining schemas
 const schemas = {
-    users: new Schema({
-        name: String,
-        email: String,
-        type: { type: String, default: 'employee' },
-        dob: { type: Date, default: Date.now },
-        password: String,
-        status: { type: Boolean, default: true },
+    machiya: new Schema({
+        date: { type: Date },
+        amount: { type: Number },
+        card_type: { type: String },
         created_at: {type: Date },
-        updated_at: {type: Date, default: Date.now}
+        updated_at: {type: Date }
+    },
+    {
+        collection: 'machiya'
     })
 };
 
 // adding pre-save/pre-update hooks for updating the created_at and updated_at dates
-schemas.users.pre('save', function (next) {
+schemas.machiya.pre('save', function (next) {
     const now = Date.now();
-    this.created_at = Date.now();
+    this.date = now;
+    this.created_at = now;
     next();
 });
-schemas.users.pre('update', function () {
+schemas.machiya.pre('update', function () {
     this.update({}, { $set: { updated_at: new Date() } });
 });
 
 //creating models for collections
 const models = {
-    userModel: mongoose.model('users', schemas.users)
+    machiyaModel: mongoose.model('machiya', schemas.machiya),
 }
 
 module.exports = {
