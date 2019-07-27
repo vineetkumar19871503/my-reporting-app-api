@@ -1,5 +1,6 @@
 const authHandler = require('../handlers/AuthHandler'),
-    highCourtModel = require('../db/models/HighCourtModel');
+    highCourtModel = require('../db/models/HighCourtModel'),
+    moment = require('moment');
 
 module.exports = {
     name: 'highcourt',
@@ -31,44 +32,52 @@ module.exports = {
     get: {
         list: function (req, res, next) {
             authHandler(req, res, next, function () {
-                // let defaultConditions = {};
-                // const q = req.query;
-                // if (q && Object.keys(q).length) {
-                //     if (q.k_number) {
-                //         defaultConditions["consumer.k_number"] = { '$regex': new RegExp(q.k_number, 'i') };
-                //     }
-                //     if (q.startDate) {
-                //         let startDate = new Date(q.startDate);
-                //         startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-                //         defaultConditions.bill_submission_date = { '$gte': startDate };
-                //     }
-                //     if (q.endDate) {
-                //         let endDate = new Date(q.endDate);
-                //         endDate.setDate(endDate.getDate() + 1);
-                //         endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-                //         if (defaultConditions.bill_submission_date) {
-                //             if (Object.keys(defaultConditions.bill_submission_date).length) {
-                //                 defaultConditions.bill_submission_date.$lt = endDate;
-                //             } else {
-                //                 defaultConditions.bill_submission_date = { '$lt': endDate };
-                //             }
-                //         }
-                //     }
-                // }
-                // billModel.getBills(defaultConditions)
-                //     .then(function (bills) {
-                //         var response = {
-                //             message: 'Bills not found!'
-                //         };
-                //         if (bills.length) {
-                //             response.message = 'Bills';
-                //         }
-                //         response.data = bills;
-                //         res.rest.success(response);
-                //     })
-                //     .catch(function (err) {
-                //         res.rest.serverError(err.message);
-                //     });
+                let defaultConditions = {};
+                const q = req.query;
+                if (q && Object.keys(q).length) {
+                    if (q.start_date) {
+                        let startDate = new Date(q.start_date);
+                        startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+                        defaultConditions.date = { '$gte': startDate };
+                    }
+                    if (q.end_date) {
+                        let endDate = new Date(q.end_date);
+                        endDate.setDate(endDate.getDate() + 1);
+                        endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+                        if (defaultConditions.date) {
+                            if (Object.keys(defaultConditions.date).length) {
+                                defaultConditions.date.$lt = endDate;
+                            } else {
+                                defaultConditions.date = { '$lt': endDate };
+                            }
+                        }
+                    }
+                    if (q.search_card_type) {
+                        defaultConditions["card_type"] = { '$regex': new RegExp(q.search_card_type, 'i') };                
+                    }
+                }
+                
+                highCourtModel.list(defaultConditions)
+                    .then(function (documents) {
+                        var response = {
+                            message: 'No record found!'
+                        };
+                        documents = JSON.parse(JSON.stringify(documents));
+                        documents = documents.map(function (e) {
+                            const momentDate = moment(e.date);
+                            e.date = momentDate.format("MM/DD/YYYY");
+                            e.display_date = momentDate.format('DD/MM/YYYY');
+                            return e;
+                        });
+                        if (documents.length) {
+                            response.message = 'Records';
+                        }
+                        response.data = documents;
+                        res.rest.success(response);
+                    })
+                    .catch(function (err) {
+                        res.rest.serverError(err.message);
+                    });
             });
         }
     }
