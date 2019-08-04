@@ -17,7 +17,7 @@ module.exports = {
                     });
             });
         },
-        update: function (req, res, next) {
+        edit: function (req, res, next) {
             authHandler(req, res, next, function () {
                 yavukushModel.update(req.body)
                     .then(function (response) {
@@ -55,11 +55,11 @@ module.exports = {
                     }
 
                     if (q.search_card_type) {
-                        defaultConditions["card_type"] = { '$regex': new RegExp(q.search_card_type, 'i') };
+                        defaultConditions["card_type"] = q.search_card_type;
                     }
 
                     if (q.search_entry_type) {
-                        defaultConditions["entry_type"] = { '$regex': new RegExp(q.search_entry_type, 'i') };
+                        defaultConditions["entry_type"] = q.search_entry_type;
                     }
                 }
                 

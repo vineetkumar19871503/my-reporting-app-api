@@ -24,7 +24,7 @@ module.exports = {
     },
     update: function (data) {
         return new Promise(function (resolve, reject) {
-            discomPoleModel.update({ "_id": data.id }, { $set: data }, function (err, document) {
+            discomPoleModel.update({ "_id": data._id }, { $set: data }, function (err, document) {
                 if (err) {
                     reject({ "message": "Error: " + err.message });
                 } else {

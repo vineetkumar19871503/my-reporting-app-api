@@ -17,7 +17,7 @@ module.exports = {
                     });
             });
         },
-        update: function (req, res, next) {
+        edit: function (req, res, next) {
             authHandler(req, res, next, function () {
                 bsnlCableModel.update(req.body)
                     .then(function (response) {
@@ -53,8 +53,11 @@ module.exports = {
                         documents = JSON.parse(JSON.stringify(documents));
                         documents = documents.map(function (e) {
                             const momentDate = moment(e.date);
+                            const momentReminderDate = moment(e.reminder_date);
                             e.date = momentDate.format("MM/DD/YYYY");
                             e.display_date = momentDate.format('DD/MM/YYYY');
+                            e.reminder_date = momentReminderDate.format("MM/DD/YYYY");
+                            e.display_reminder_date = momentReminderDate.format('DD/MM/YYYY');
                             return e;
                         });
                         if (documents.length) {

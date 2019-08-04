@@ -17,7 +17,7 @@ module.exports = {
                     });
             });
         },
-        update: function (req, res, next) {
+        edit: function (req, res, next) {
             authHandler(req, res, next, function () {
                 discomPoleModel.update(req.body)
                     .then(function (response) {
