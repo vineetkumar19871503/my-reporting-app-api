@@ -3,8 +3,8 @@ var config = {
   expressSessionSecure: true,
   expressSessionHttpOnly: false,
   db: {
-    url: 'mongodb://vineetkumar198715:reportingapp123@ds121624.mlab.com:21624/reporting-app'
-    // url: 'mongodb://localhost:27017/emitra'  
+    // url: 'mongodb://vineetkumar198715:reportingapp123@ds121624.mlab.com:21624/reporting-app'
+    url: 'mongodb://localhost:27017/emitra'  
   },
   apiPrefix: '/api/v1',
   bcryptSalt: 10,

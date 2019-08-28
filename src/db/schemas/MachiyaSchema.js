@@ -8,12 +8,14 @@ const schemas = {
         date: { type: Date },
         amount: { type: Number },
         card_type: { type: String },
-        created_at: {type: Date },
-        updated_at: {type: Date }
+        bank_name: { type: String },
+        description: { type: String },
+        created_at: { type: Date },
+        updated_at: { type: Date }
     },
-    {
-        collection: 'machiya'
-    })
+        {
+            collection: 'machiya'
+        })
 };
 
 // adding pre-save/pre-update hooks for updating the created_at and updated_at dates

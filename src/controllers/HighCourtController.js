@@ -55,6 +55,10 @@ module.exports = {
                     if (q.search_card_type) {
                         defaultConditions["card_type"] = q.search_card_type;                
                     }
+
+                    if (q.search_bank_name) {
+                        defaultConditions["bank_name"] = q.search_bank_name;                
+                    }
                 }
                 
                 highCourtModel.list(defaultConditions)

@@ -13,12 +13,13 @@ const schemas = {
         net_plan: { type: String },
         reminder_date: { type: Date },
         status: { type: String },
+        source: { type: String, default: 'admin' },
         created_at: { type: Date },
         updated_at: { type: Date }
     },
-    {
-        collection: 'bsnl_cable'
-    })
+        {
+            collection: 'bsnl_cable'
+        })
 };
 
 // adding pre-save/pre-update hooks for updating the created_at and updated_at dates

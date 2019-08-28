@@ -1,12 +1,12 @@
 const authHandler = require('../handlers/AuthHandler'),
-    bsnlConnectionModel = require('../db/models/BsnlConnectionModel'),
+    bsnlCableModel = require('../db/models/BsnlCableModel'),
     moment = require('moment');
 
 module.exports = {
     name: 'bsnlconnection',
     post: {
         add: function (req, res, next) {
-            bsnlConnectionModel.add(req.body)
+            bsnlCableModel.add(req.body)
                 .then(function (response) {
                     response = JSON.parse(JSON.stringify(response));
                     res.rest.success(response);

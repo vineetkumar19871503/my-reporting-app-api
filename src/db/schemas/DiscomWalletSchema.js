@@ -4,7 +4,7 @@ const config = require('../../../config'),
 
 //defining schemas
 const schemas = {
-    high_court: new Schema({
+    discom_wallet: new Schema({
         date: { type: Date },
         amount: { type: Number },
         card_type: { type: String },
@@ -14,24 +14,24 @@ const schemas = {
         updated_at: {type: Date }
     },
     {
-        collection: 'high_court'
+        collection: 'discom_wallet'
     })
 };
 
 // adding pre-save/pre-update hooks for updating the created_at and updated_at dates
-schemas.high_court.pre('save', function (next) {
+schemas.discom_wallet.pre('save', function (next) {
     const now = Date.now();
     this.date = now;
     this.created_at = now;
     next();
 });
-schemas.high_court.pre('update', function () {
+schemas.discom_wallet.pre('update', function () {
     this.update({}, { $set: { updated_at: new Date() } });
 });
 
 //creating models for collections
 const models = {
-    highCourtModel: mongoose.model('high_court', schemas.high_court),
+    discomWalletModel: mongoose.model('discom_wallet', schemas.discom_wallet),
 }
 
 module.exports = {

@@ -1,13 +1,13 @@
 const authHandler = require('../handlers/AuthHandler'),
-    machiyaModel = require('../db/models/MachiyaModel'),
+    discomWalletModel = require('../db/models/DiscomWalletModel'),
     moment = require('moment');
 
 module.exports = {
-    name: 'machiya',
+    name: 'discomwallet',
     post: {
         add: function (req, res, next) {
             authHandler(req, res, next, function () {
-                machiyaModel.add(req.body)
+                discomWalletModel.add(req.body)
                     .then(function (response) {
                         response = JSON.parse(JSON.stringify(response));
                         res.rest.success(response);
@@ -19,7 +19,7 @@ module.exports = {
         },
         edit: function (req, res, next) {
             authHandler(req, res, next, function () {
-                machiyaModel.update(req.body)
+                discomWalletModel.update(req.body)
                     .then(function (response) {
                         res.rest.success(response);
                     })
@@ -40,7 +40,6 @@ module.exports = {
                         startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
                         defaultConditions.date = { '$gte': startDate };
                     }
-
                     if (q.end_date) {
                         let endDate = new Date(q.end_date);
                         endDate.setDate(endDate.getDate() + 1);
@@ -53,9 +52,8 @@ module.exports = {
                             }
                         }
                     }
-
                     if (q.search_card_type) {
-                        defaultConditions["card_type"] = q.search_card_type;
+                        defaultConditions["card_type"] = q.search_card_type;                
                     }
 
                     if (q.search_bank_name) {
@@ -63,7 +61,7 @@ module.exports = {
                     }
                 }
                 
-                machiyaModel.list(defaultConditions)
+                discomWalletModel.list(defaultConditions)
                     .then(function (documents) {
                         var response = {
                             message: 'No record found!'
