@@ -41,11 +41,23 @@ module.exports = {
                         }
                     })
                     .catch(function (err) {
-
+                        res.rest.serverError({ 'message': 'Error : Bill could not be added. ' + err.message });
+                    });
+            });
+        },
+        update: function (req, res, next) {
+            authHandler(req, res, next, function () {
+                billModel.update(req.body)
+                    .then(function (response) {
+                        res.rest.success(response);
+                    })
+                    .catch(function (err) {
+                        res.rest.serverError(err);
                     });
             });
         }
     },
+
     get: {
         list: function (req, res, next) {
             authHandler(req, res, next, function () {
@@ -73,7 +85,7 @@ module.exports = {
                         }
                     }
                 }
-                billModel.getBills(defaultConditions)
+                billModel.getBills(defaultConditions, {}, { "_id": -1 })
                     .then(function (bills) {
                         var response = {
                             message: 'Bills not found!'

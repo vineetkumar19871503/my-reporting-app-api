@@ -10,6 +10,7 @@ const schemas = {
         card_type: { type: String },
         description: { type: String },
         entry_type: { type: String },
+        created_by: { type: Schema.Types.ObjectId },
         created_at: {type: Date },
         updated_at: {type: Date }
     },

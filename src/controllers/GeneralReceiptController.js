@@ -1,13 +1,13 @@
 const authHandler = require('../handlers/AuthHandler'),
-    yavukushModel = require('../db/models/YavukushModel'),
+    generalReceiptModel = require('../db/models/GeneralReceiptModel'),
     moment = require('moment');
 
 module.exports = {
-    name: 'yavukush',
+    name: 'generalreceipt',
     post: {
         add: function (req, res, next) {
             authHandler(req, res, next, function () {
-                yavukushModel.add(req.body)
+                generalReceiptModel.add(req.body)
                     .then(function (response) {
                         response = JSON.parse(JSON.stringify(response));
                         res.rest.success(response);
@@ -19,7 +19,7 @@ module.exports = {
         },
         edit: function (req, res, next) {
             authHandler(req, res, next, function () {
-                yavukushModel.update(req.body)
+                generalReceiptModel.update(req.body)
                     .then(function (response) {
                         res.rest.success(response);
                     })
@@ -40,7 +40,7 @@ module.exports = {
                         startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
                         defaultConditions.date = { '$gte': startDate };
                     }
-
+                    
                     if (q.end_date) {
                         let endDate = new Date(q.end_date);
                         endDate.setDate(endDate.getDate() + 1);
@@ -57,13 +57,9 @@ module.exports = {
                     if (q.search_card_type) {
                         defaultConditions["card_type"] = q.search_card_type;
                     }
-
-                    if (q.search_entry_type) {
-                        defaultConditions["entry_type"] = q.search_entry_type;
-                    }
                 }
                 
-                yavukushModel.list(defaultConditions)
+                generalReceiptModel.list(defaultConditions)
                     .then(function (documents) {
                         var response = {
                             message: 'No record found!'
@@ -75,25 +71,6 @@ module.exports = {
                             e.display_date = momentDate.format('DD/MM/YYYY');
                             return e;
                         });
-                        if (documents.length) {
-                            response.message = 'Records';
-                        }
-                        response.data = documents;
-                        res.rest.success(response);
-                    })
-                    .catch(function (err) {
-                        res.rest.serverError(err.message);
-                    });
-            });
-        },
-        getentrytypes: function(req, res, next) {
-            authHandler(req, res, next, function () {
-                yavukushModel.getentrytypes()
-                    .then(function (documents) {
-                        var response = {
-                            message: 'No record found!'
-                        };
-                        documents = JSON.parse(JSON.stringify(documents));
                         if (documents.length) {
                             response.message = 'Records';
                         }

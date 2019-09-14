@@ -11,6 +11,7 @@ const schemas = {
         sell_status: { type: String },
         quantity: { type: Number },
         card_type: { type: String },
+        created_by: { type: Schema.Types.ObjectId },
         created_at: {type: Date },
         updated_at: {type: Date }
     },

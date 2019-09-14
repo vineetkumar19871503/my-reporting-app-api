@@ -4,35 +4,36 @@ const config = require('../../../config'),
 
 //defining schemas
 const schemas = {
-    machiya: new Schema({
+    generalReceipt: new Schema({
         date: { type: Date },
-        amount: { type: Number },
+        name: { type: String },
+        mobile: { type: String },
         card_type: { type: String },
-        bank_name: { type: String },
+        amount: { type: Number },
         description: { type: String },
-        created_by: { type: Schema.Types.ObjectId },
-        created_at: { type: Date },
-        updated_at: { type: Date }
+        receipt_number: { type: String },
+        bill_submission_date: { type: Date, default: Date.now },
+        created_by: { type: Schema.Types.ObjectId }
     },
         {
-            collection: 'machiya'
+            collection: 'general_receipts'
         })
 };
 
 // adding pre-save/pre-update hooks for updating the created_at and updated_at dates
-schemas.machiya.pre('save', function (next) {
+schemas.generalReceipt.pre('save', function (next) {
     const now = Date.now();
     this.date = now;
     this.created_at = now;
     next();
 });
-schemas.machiya.pre('update', function () {
+schemas.generalReceipt.pre('update', function () {
     this.update({}, { $set: { updated_at: new Date() } });
 });
 
 //creating models for collections
 const models = {
-    machiyaModel: mongoose.model('machiya', schemas.machiya),
+    generalReceiptModel: mongoose.model('general_receipts', schemas.generalReceipt),
 }
 
 module.exports = {

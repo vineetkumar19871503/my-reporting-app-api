@@ -11,6 +11,7 @@ const schemas = {
         dob: { type: Date, default: Date.now },
         password: String,
         status: { type: Boolean, default: true },
+        created_by: { type: Schema.Types.ObjectId },
         created_at: {type: Date },
         updated_at: {type: Date, default: Date.now}
     })

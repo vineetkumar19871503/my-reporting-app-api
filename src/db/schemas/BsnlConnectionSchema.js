@@ -13,6 +13,7 @@ const schemas = {
         net_plan: { type: String },
         reminder_date: { type: Date },
         status: { type: String },
+        created_by: { type: Schema.Types.ObjectId },
         created_at: { type: Date },
         updated_at: { type: Date }
     },

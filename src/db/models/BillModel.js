@@ -34,13 +34,30 @@ module.exports = {
 
     },
     saveBill: function (data) {
-        data.receipt_number = "191"+("" + Math.random()).substring(2, 10);
-        data.trans_id = "1901"+("" + Math.random()).substring(2, 10);
+        data.receipt_number = "191" + ("" + Math.random()).substring(2, 10);
+        data.trans_id = "1901" + ("" + Math.random()).substring(2, 10);
         var newBill = new billModel(data);
         return new Promise(function (resolve, reject) {
             newBill.save(function (err, bill) {
                 err ? reject(err) : resolve(bill);
             });
         });
+    },
+    update: function (data) {
+        return new Promise(function (resolve, reject) {
+            billModel.update({ "_id": data._id }, { $set: data }, function (err, document) {
+                if (err) {
+                    reject({ "message": "Error: " + err.message });
+                } else {
+                    let res;
+                    if (document.nModified && document.nModified > 0) {
+                        resolve({ "message": "Bill updated successfully" });
+                    } else {
+                        reject({ "message": "Bill was not updated" });
+                    }
+                }
+            });
+        });
     }
+
 }

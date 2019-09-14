@@ -14,6 +14,7 @@ const schemas = {
         reminder_date: { type: Date },
         status: { type: String },
         source: { type: String, default: 'admin' },
+        created_by: { type: Schema.Types.ObjectId },
         created_at: { type: Date },
         updated_at: { type: Date }
     },

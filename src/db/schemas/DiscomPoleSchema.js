@@ -10,6 +10,7 @@ const schemas = {
         address: { type: String },
         an_jn_office: { type: String },
         staywire: { type: String },
+        created_by: { type: Schema.Types.ObjectId },
         created_at: {type: Date },
         updated_at: {type: Date }
     },
