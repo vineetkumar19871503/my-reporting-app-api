@@ -71,6 +71,7 @@ module.exports = {
                         if (users.length) {
                             res.rest.success({ 'is_err': true, 'message': 'User already exists!' });
                         } else {
+                            req.body.full_name = req.body.fname+" "+req.body.lname;
                             userModel.updateUser(req.body)
                                 .then(function (response) {
                                     res.rest.success({ 'message': 'User updated successfully!' });
@@ -78,6 +79,33 @@ module.exports = {
                                 .catch(function (err) {
                                     res.rest.serverError({ 'message': 'Error : User could not be updated. ' + err.message });
                                 });
+                        }
+                    })
+                    .catch(function (err) {
+                        res.rest.serverError(err.message);
+                    });
+            });
+        },
+        syncPermissions: function (req, res, next) {
+            authHandler(req, res, next, function () {
+                userModel.getUsers({ '_id': req.body.id })
+                    .then(function (users) {
+                        if(users.length) {
+                            const user = users[0];
+                            let data = {"synchronized": false, "pagePermissions": null}
+                            if(!user.permissionsSynchronized) {
+                                data.synchronized = true;
+                                data.pagePermissions = user.pagePermissions;
+                                userModel.updateUser({"uid": req.body.id, "permissionsSynchronized": true})
+                                .then(function() {
+                                    res.rest.success(data);
+                                })
+                                .catch(function(err){
+                                    res.rest.serverError(err.message);
+                                });
+                            } else {
+                                res.rest.success(data);
+                            }
                         }
                     })
                     .catch(function (err) {
@@ -95,6 +123,20 @@ module.exports = {
         list: function (req, res, next) {
             authHandler(req, res, next, function () {
                 let defaultConditions = {};
+                const q = req.query;
+                if (q && Object.keys(q).length) {
+                    if (q.search_name) {
+                        defaultConditions["full_name"] = { '$regex': new RegExp(q.search_name, 'i') };
+                    }
+
+                    if (q.search_email) {
+                        defaultConditions["email"] = { '$regex': new RegExp(q.search_email, 'i') };
+                    }
+
+                    if (q.search_address) {
+                        defaultConditions["address"] = { '$regex': new RegExp(q.search_address, 'i') };
+                    }
+                }
                 userModel.getUsers(defaultConditions)
                     .then(function (users) {
                         var response = {

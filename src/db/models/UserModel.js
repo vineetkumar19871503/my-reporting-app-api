@@ -21,6 +21,7 @@ module.exports = {
     saveUser: function (data) {
         var newUser = new userModel(data);
         newUser.password = bcrypt.hashSync(data.password, config.bcryptSalt);
+        newUser.full_name = data.fname + " " + data.lname;
         return new Promise(function (resolve, reject) {
             newUser.save(function (err, user) {
                 err ? reject(err) : resolve(user);
@@ -29,7 +30,7 @@ module.exports = {
     },
     updateUser: function (data) {
         return new Promise(function (resolve, reject) {
-            userModel.update({ '_id': data.uid }, data)
+            userModel.update({ '_id': data.uid }, { $set: data })
                 .then(function (res) {
                     resolve(res)
                 })

@@ -5,15 +5,20 @@ const config = require('../../../config'),
 //defining schemas
 const schemas = {
     users: new Schema({
-        name: String,
+        fname: String,
+        lname: String,
+        full_name: String,
         email: String,
+        address: String,
         type: { type: String, default: 'employee' },
-        dob: { type: Date, default: Date.now },
+        // dob: { type: Date, default: Date.now },
         password: String,
         status: { type: Boolean, default: true },
+        pagePermissions: { type: Object },
+        permissionsSynchronized: { type: Boolean, default: true },
         created_by: { type: Schema.Types.ObjectId },
-        created_at: {type: Date },
-        updated_at: {type: Date, default: Date.now}
+        created_at: { type: Date },
+        updated_at: { type: Date, default: Date.now }
     })
 };
 
