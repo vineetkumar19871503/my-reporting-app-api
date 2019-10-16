@@ -29,6 +29,9 @@ module.exports = {
         });
     },
     updateUser: function (data) {
+        if (data.password) {
+            data.password = bcrypt.hashSync(data.password, config.bcryptSalt);
+        }
         return new Promise(function (resolve, reject) {
             userModel.update({ '_id': data.uid }, { $set: data })
                 .then(function (res) {

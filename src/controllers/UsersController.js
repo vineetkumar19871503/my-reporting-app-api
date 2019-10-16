@@ -15,12 +15,12 @@ module.exports = {
                     if (user.length && bcrypt.compareSync(password, user[0].password)) {
                         user = user[0];
                         if (user.status) {
-                            generateToken({ id: user._id, email: user.email, name: user.name }, function (err, token) {
+                            generateToken({ id: user._id, email: user.email, name: user.name }, async function (err, token) {
                                 if (!err) {
                                     //saving user data into session
                                     req.session.userData = JSON.parse(JSON.stringify(user));
                                     req.session.token = token;
-
+                                    await userModel.updateUser({"uid": user._id, "permissionsSynchronized": true});
                                     //preparing response
                                     var resUser = JSON.parse(JSON.stringify(user));
                                     response.message = 'Logged in successfully!';
