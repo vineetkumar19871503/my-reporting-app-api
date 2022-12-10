@@ -11,7 +11,7 @@
     "bcrypt": "^3.0.3",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "express-controllers-routes": "^1.0.4",
     "express-rest-response": "^1.2.0",
     "express-session": "^1.15.6",
