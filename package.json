@@ -16,7 +16,7 @@
     "express-rest-response": "^1.2.0",
     "express-session": "^1.15.6",
     "fs": "0.0.1-security",
-    "jsonwebtoken": "^8.1.0",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.24.0",
     "mongoose": "^4.13.0",
     "path": "^0.12.7"
